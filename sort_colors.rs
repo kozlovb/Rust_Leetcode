@@ -1,7 +1,7 @@
 // problem description - https://leetcode.com/problems/sort-colors/description/
 // tested by leetcode
 
-mpl Solution {
+impl Solution {
     pub fn sort_colors(nums: &mut Vec<i32>) {
         let find_first_not_from = |element: i32, from: usize, nums: &Vec<i32>| -> i32 {
             for i in from..nums.len() {
