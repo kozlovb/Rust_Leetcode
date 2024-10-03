@@ -82,7 +82,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  min-width: 797px;
+  min-width: ;
   max-width: 100%;
   font-size: var(--text-lg-medium-size);
   color: var(--surface-primary);

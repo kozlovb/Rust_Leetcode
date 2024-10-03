@@ -5,8 +5,7 @@ import {
   useNavigationType,
   useLocation,
 } from "react-router-dom";
-import ChatBot from "./pages/ChatBot1";
-import ChatBot1 from "./pages/ChatBot";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
   const action = useNavigationType();
@@ -28,10 +27,6 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/chat-bot":
-        title = "";
-        metaDescription = "";
-        break;
     }
 
     if (title) {
@@ -50,8 +45,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<ChatBot />} />
-      <Route path="/chat-bot" element={<ChatBot1 />} />
+      <Route path="/" element={<ChatPage />} />
     </Routes>
   );
 }
