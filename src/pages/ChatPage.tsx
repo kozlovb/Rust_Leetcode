@@ -90,7 +90,7 @@ const ChatPage: FunctionComponent = () => {
                   className={styles.heroiconsOutlinecheck}
                   loading="lazy"
                   alt=""
-                  src="/badge.svg"
+                  src="/heroiconsoutlinecheck.svg"
                 />
               </div>
               <b className={styles.votreSupport}>Votre support</b>
