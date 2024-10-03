@@ -1,0 +1,25 @@
+.text9 {
+  width: 36px;
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.button3,
+.masterbuttondesktop3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.masterbuttondesktop3 {
+  border-radius: var(--radius-rounded-xs);
+  background-color: var(--surface-primary);
+  overflow: hidden;
+  flex-direction: row;
+  padding: var(--spacing-spacing-sm) var(--padding-mini);
+  gap: var(--spacing-spacing-sm);
+}
+.button3 {
+  flex-direction: column;
+}
