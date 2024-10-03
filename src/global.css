@@ -20,6 +20,7 @@ body {
   --text-s-medium-size: 14px;
   --font-size-3xs-7: 9.7px;
   --text-lg-medium-size: 18px;
+  --text-base-bold-size: 16px;
 
   /* Colors */
   --surface-background-light: #f8fafc;
@@ -27,6 +28,7 @@ body {
   --color-sandybrown: #f2b263;
   --grey-900: #111827;
   --text-text-primary: #0f172a;
+  --color-gray-200: rgba(255, 255, 255, 0.5);
   --color-gray-100: rgba(255, 255, 255, 0.1);
   --surface-hover-1: #563672;
   --surface-primary: #42225d;
@@ -41,6 +43,7 @@ body {
   --surface-background-light-brand: #efeafc;
   --surface-all-disabled: #cbd5e1;
   --border-hover: #e2e8f0;
+  --surface-brand-light: #a8e3d8;
 
   /* Spacing */
   --boundvariablesdata: 16px;
@@ -53,7 +56,9 @@ body {
   --number-44: 44px;
 
   /* Gaps */
+  --gap-13xl: 32px;
   --gap-base: 16px;
+  --gap-6xl: 25px;
   --gap-5xl: 24px;
   --gap-9xs: 4px;
   --gap-21xl-3: 40.3px;
@@ -65,6 +70,7 @@ body {
   --gap-xs: 12px;
   --gap-lg: 18px;
   --gap-sm: 14px;
+  --gap-11xl: 30px;
 
   /* Paddings */
   --padding-13xl: 32px;
@@ -113,6 +119,10 @@ body {
   --br-6xl: 25px;
   --br-29xl-6: 48.6px;
   --br-25xl: 44px;
+  --br-15xl: 34px;
+  --br-17xl: 36px;
+  --br-10xl: 29px;
+  --br-8xs: 5px;
 
   /* Effects */
   --shadow-xl: 20px 4px 54px rgba(0, 0, 0, 0.06);

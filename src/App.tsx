@@ -5,7 +5,8 @@ import {
   useNavigationType,
   useLocation,
 } from "react-router-dom";
-import ChatBot from "./pages/ChatBot";
+import ChatBot from "./pages/ChatBot1";
+import ChatBot1 from "./pages/ChatBot";
 
 function App() {
   const action = useNavigationType();
@@ -24,6 +25,10 @@ function App() {
 
     switch (pathname) {
       case "/":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/chat-bot":
         title = "";
         metaDescription = "";
         break;
@@ -46,6 +51,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<ChatBot />} />
+      <Route path="/chat-bot" element={<ChatBot1 />} />
     </Routes>
   );
 }
