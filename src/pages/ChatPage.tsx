@@ -1,57 +1,60 @@
-import { FunctionComponent } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import styles from "./ChatPage.module.css";
 import PencilIcon from "../components/PencilIcon";
+import axios from 'axios';
+import Loader from "../components/Loader";
 
-const ChatPage: FunctionComponent = () => {
+type TMessage = {
+  role: string,
+  content: string,
+}
+
+const endpoint = 'http://127.0.0.1:5000/api/send_prompt';
+
+const ChatPage: FC = () => {
+  const [initialState, setInitialState] = useState(true);
+  const [userInput, setUserInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState<TMessage[]>([]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const handleInputChange = (e: any) => {
+    setUserInput(e.target.value);
+  };
+
+  const handleFormSubmit = async (e: any) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setInitialState(false);
+
+    if (!userInput.trim()) return;
+
+    const newMessages = [...messages, { role: 'user', content: userInput }];
+    setMessages(newMessages);
+
+    setUserInput('');
+
+    try {
+      const response = await axios.post(endpoint, {
+        prompt: userInput,
+      });
+
+      const assistantMessage = { role: 'assistant', content: response.data.response };
+      setIsLoading(false);
+      setMessages([...newMessages, assistantMessage]);
+    } catch (error) {
+      setIsLoading(false);
+      console.error('Error sending prompt:', error);
+    }
+  }
+
   return (
     <div className={styles.chatBot}>
       <header className={styles.topbar}>
-        <div className={styles.breadcrumbs}>
-          <div className={styles.breadcrumbs1}>
-            <img className={styles.separatorIcon} alt="" src="/separator.svg" />
-            <div className={styles.text}>Breadcrumbs</div>
-          </div>
-          <div className={styles.breadcrumbs2}>
-            <img
-              className={styles.separatorIcon1}
-              alt=""
-              src="/separator.svg"
-            />
-            <div className={styles.text}>Breadcrumbs</div>
-          </div>
-          <div className={styles.breadcrumbs2}>
-            <img
-              className={styles.separatorIcon1}
-              alt=""
-              src="/separator.svg"
-            />
-            <div className={styles.text}>Breadcrumbs</div>
-          </div>
-          <div className={styles.breadcrumbs2}>
-            <img
-              className={styles.separatorIcon1}
-              alt=""
-              src="/separator.svg"
-            />
-            <div className={styles.text}>Breadcrumbs</div>
-          </div>
-          <div className={styles.breadcrumbs2}>
-            <img
-              className={styles.separatorIcon1}
-              alt=""
-              src="/separator.svg"
-            />
-            <div className={styles.text}>Breadcrumbs</div>
-          </div>
-          <div className={styles.breadcrumbs6}>
-            <img
-              className={styles.separatorIcon1}
-              alt=""
-              src="/separator.svg"
-            />
-            <div className={styles.text}>Breadcrumbs</div>
-          </div>
-        </div>
         <div className={styles.button}>
           <div className={styles.masterbuttondesktop}>
             <img
@@ -68,7 +71,7 @@ const ChatPage: FunctionComponent = () => {
           </div>
         </div>
         <div className={styles.searchBar}>
-          <a className={styles.text6}>Quitter</a>
+          <span className={styles.text6}>Quitter</span>
           <div className={styles.button1}>
             <div className={styles.masterbuttondesktop1}>
               <img
@@ -121,36 +124,36 @@ const ChatPage: FunctionComponent = () => {
           </div>
           <div className={styles.rootParent}>
             <div className={styles.root}>
-              <div className={styles.container}>
-                <img className={styles.vectorIcon} alt="" src="/vector.svg" />
+              <div className={styles.headerContainer}>
+                <img className={styles.headerIcon} alt="" src="/vector.svg" />
                 <h1
-                  className={styles.containerChild}
+                  className={styles.chatHeader}
                 >Discuter de votre situation</h1>
               </div>
-              <div className={styles.container1}>
-                <div className={styles.container2}>
-                  <div className={styles.container2a}>
+              <div className={styles.container}>
+                <div className={styles.chatContainer}>
+                  {initialState && <div className={styles.placeholderContainer}>
                     <img
-                      className={styles.placeholderWrapperChild}
+                      className={styles.placeholderPicture}
                       loading="lazy"
                       alt=""
                       src="/group-37.svg"
                     />
-                    <div className={styles.placeholderContainer}>
+                    <div className={styles.infoMessageContainer}>
 
-                      <p className={styles.bienvenueSurCe}>
+                      <p className={styles.infoMessage}>
                         Bienvenue sur ce Chatbot ! Si vous avez des questions ou besoin d'aide, n'hésitez pas à me le faire savoir. Je suis là pour
                         vous assister !
                       </p>
                     </div>
-                  </div>
+                  </div>}
 
-                  <div className={styles.frameParent3}>
+                  <div className={styles.assistantMessage}>
                     <div className={styles.frameWrapper}>
-                      <div className={styles.shapesWrapper}>
-                        <div className={styles.shapes}>
+                      <div className={styles.shapeWrapper}>
+                        <div className={styles.avatarContainer}>
                           <img
-                            className={styles.frameItem}
+                            className={styles.avatar}
                             alt=""
                             src="/chat-avatar.svg"
                           />
@@ -158,45 +161,73 @@ const ChatPage: FunctionComponent = () => {
                       </div>
                     </div>
                     <div
-                      className={styles.placeholder4}
+                      className={styles.messageTextext}
 
                     >Décrivez votre situation</div>
                   </div>
+
+                  {messages.map((message, index) => {
+                    if (message.role === "assistant") {
+                      return (<div key={index} className={styles.assistantMessage}>
+                        <div className={styles.frameWrapper}>
+                          <div className={styles.shapeWrapper}>
+                            <div className={styles.avatarContainer}>
+                              <img
+                                className={styles.avatar}
+                                alt=""
+                                src="/chat-avatar.svg"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.messageTextext}
+
+                        >{message.content}</div>
+                      </div>)
+                    }
+                    return (
+                      <div key={index} className={styles.userMessage}>
+                        <div
+                          className={styles.messageTextext}
+                        >{message.content}</div>
+                      </div>
+                    )
+                  })}
+
+                  {isLoading && <Loader />}
+                  <div ref={bottomRef} />
                 </div>
 
-                <footer className={styles.inputParent}>
-                  <div className={styles.input}>
+                <form className={styles.inputForm} onSubmit={handleFormSubmit}>
+                  <div className={styles.inputContainer}>
+                    <input
+                      className={styles.inputField}
+                      value={userInput}
+                      placeholder="Placeholder"
+                      onChange={handleInputChange}
+                      type="text"
+                    />
+                  </div>
+                  <div className={styles.buttonContainer}>
+                    <div className={styles.innerButtonContainer}>
+                      <button type="submit" className={styles.sendButton}>Envoyer</button>
+                    </div>
+                  </div>
+                </form>
 
-                    <div className={styles.field}>
-                      <div className={styles.label1}>Label</div>
-                      <input
-                        className={styles.text7}
-                        placeholder="Placeholder"
-                        type="text"
-                      />
+                <div className={styles.secondButtonContainer}>
+                  <div className={styles.secondButtonInnerContainer}>
+
+                    <div className={styles.secondButton}>
+                      Découvrir mon récapitulatif
                     </div>
 
                   </div>
-                  <div className={styles.button2}>
-                    <div className={styles.masterbuttondesktop2}>
-
-                      <div className={styles.text8}>Envoyer</div>
-
-                    </div>
-                  </div>
-                </footer>
-                <div className={styles.buttonWrapper}>
-                    <div className={styles.masterbuttondesktop3}>
-
-                      <div className={styles.text9}>
-                        Découvrir mon récapitulatif
-                      </div>
-
-                    </div>
                 </div>
               </div>
             </div>
-            
+
             <div className={styles.rightPanel}>
               <div className={styles.sidebar}>
                 <img
@@ -238,16 +269,17 @@ const ChatPage: FunctionComponent = () => {
                   src="/group.svg"
                 />
               </div>
+
               <div className={styles.cardMembership}>
                 <div className={styles.cardContainer}>
-                <div className={styles.frameParent6}>
-                      <img
-                        className={styles.instanceChild}
-                        loading="lazy"
-                        alt=""
-                        src="/group-32-1.svg"
-                      />
-                    </div>
+                  <div className={styles.frameParent6}>
+                    <img
+                      className={styles.instanceChild}
+                      loading="lazy"
+                      alt=""
+                      src="/group-32-1.svg"
+                    />
+                  </div>
                   <div className={styles.cardBackground} />
                   <img
                     className={styles.intersectIcon}
@@ -261,7 +293,7 @@ const ChatPage: FunctionComponent = () => {
                       src="/group-32.svg"
                     />
                     <div className={styles.cardHeader} />
-                    
+
                   </div>
                   <div className={styles.progressInfo}>
                     <div className={styles.rocketContainer} />

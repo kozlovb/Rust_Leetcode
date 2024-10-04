@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=ABC+Monument+Grotesk+Trial:wght@400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Advent+Pro:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
 body {
@@ -9,7 +8,7 @@ body {
 :root {
   /* fonts */
   --text-2xl-bold: "Advent Pro";
-  --text-xs-medium: "ABC Monument Grotesk Trial";
+  --text-xs-medium: "Open Sans";
   --text-xs-medium1: Inter;
   --dm-sans-sm-14px-medium: "DM Sans";
 
